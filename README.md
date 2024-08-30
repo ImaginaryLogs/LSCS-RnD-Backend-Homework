@@ -1,4 +1,4 @@
-# LSCS-Homework
+# LSCS-RnD-Backend-Homework
 
 Repository to answer the back-end challenge homework for LSCS.
 
