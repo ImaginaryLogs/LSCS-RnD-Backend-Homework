@@ -12,9 +12,19 @@ import { redirect_errors } from "../midwares.mjs";
 import { QuestionModel } from "../models/question_model.mjs";
 ;
 ;
+/**
+ * Checks if a question is invalid.
+ * @param {string | undefined | null} question - The question to validate.
+ * @returns {boolean} - Returns true if the question is invalid; otherwise false.
+ */
 const isInvalidQuestion = (question) => {
     return question == null || question.length == 0;
 };
+/**
+ * Checks if a list of choices is invalid.
+ * @param {string[] | undefined | null} choices - The choices to validate.
+ * @returns {boolean} - Returns true if the choices are invalid; otherwise false.
+ */
 const isInvalidChoices = (choices) => {
     const isInvalidArray = choices == null || choices.length < 2;
     if (isInvalidArray)
@@ -26,6 +36,12 @@ const isInvalidChoices = (choices) => {
     const hasInvalidAnswer = validLengths != (choices === null || choices === void 0 ? void 0 : choices.length);
     return hasInvalidAnswer || isInvalidArray;
 };
+/**
+ * Checks if a correct answer is invalid.
+ * @param {string | undefined | null} answer - The answer to validate.
+ * @param {string[] | undefined | null} choices - The list of choices for the question.
+ * @returns {boolean} - Returns true if the correct answer is invalid; otherwise false.
+ */
 const isInvalidCorrectAnswer = (answer, choices) => {
     if (isInvalidAnswer(answer))
         return true;
@@ -36,9 +52,21 @@ const isInvalidCorrectAnswer = (answer, choices) => {
     const hasMatchingAnswer = matchingAnswers == 0;
     return hasMatchingAnswer;
 };
+/**
+ * Checks if an answer is invalid.
+ * @param {string | undefined | null} answer - The answer to validate.
+ * @returns {boolean} - Returns true if the answer is invalid; otherwise false.
+ */
 const isInvalidAnswer = (answer) => {
     return answer == null || answer.length == 0;
 };
+/**
+ * Adds a new question to the database.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating the result of the operation.
+ */
 export const add_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let req_payload = req.body;
     try {
@@ -67,6 +95,13 @@ export const add_question = redirect_errors((req, res) => __awaiter(void 0, void
     });
     return res.status(200).json({ message: "Valid response.", db_record: question });
 }));
+/**
+ * Edits an existing question in the database.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating the result of the operation.
+ */
 export const edit_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const req_payload = req.body;
@@ -83,6 +118,13 @@ export const edit_question = redirect_errors((req, res) => __awaiter(void 0, voi
     const result = QuestionModel.findOneAndUpdate({ "question": req_payload.original_question }, { "$set": new_params }, { upsert: false }).exec();
     return res.status(200).json({ message: 'Updated.' });
 }));
+/**
+ * Deletes a question from the database.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating the result of the operation.
+ */
 export const delete_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { question } = req.body;
     const existingQuestion = yield QuestionModel.findOne({ question: question });
@@ -91,6 +133,13 @@ export const delete_question = redirect_errors((req, res) => __awaiter(void 0, v
     const result = yield QuestionModel.deleteOne({ question });
     return res.status(200).json(result);
 }));
+/**
+ * Retrieves a question from the database.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response containing the question data.
+ */
 export const get_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { question } = req.body;
     if (isInvalidQuestion(question))
@@ -105,6 +154,13 @@ export const get_question = redirect_errors((req, res) => __awaiter(void 0, void
     };
     return res.status(200).json(question_data);
 }));
+/**
+ * Lists all questions from the database.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response containing the list of questions.
+ */
 export const list_questions = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield QuestionModel.find({});
     const payload = {
@@ -113,6 +169,13 @@ export const list_questions = redirect_errors((req, res) => __awaiter(void 0, vo
     };
     res.status(200).json(payload);
 }));
+/**
+ * Checks if a submitted answer is correct.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating whether the answer is correct or not.
+ */
 export const check_answer = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const req_payload = req.body;

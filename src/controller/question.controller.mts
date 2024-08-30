@@ -16,10 +16,20 @@ interface IEditQuestion {
     new_parameters: IQuestion;
 };
 
+/**
+ * Checks if a question is invalid.
+ * @param {string | undefined | null} question - The question to validate.
+ * @returns {boolean} - Returns true if the question is invalid; otherwise false.
+ */
 const isInvalidQuestion = (question: String | undefined | null) => {
     return question == null || question.length == 0;
 }
 
+/**
+ * Checks if a list of choices is invalid.
+ * @param {string[] | undefined | null} choices - The choices to validate.
+ * @returns {boolean} - Returns true if the choices are invalid; otherwise false.
+ */
 const isInvalidChoices = (choices: String[] | undefined | null) => {
     const isInvalidArray: Boolean = choices == null || choices.length < 2;
 
@@ -36,6 +46,13 @@ const isInvalidChoices = (choices: String[] | undefined | null) => {
     return hasInvalidAnswer || isInvalidArray;
 }
 
+/**
+ * Checks if a correct answer is invalid.
+ * @param {string | undefined | null} answer - The answer to validate.
+ * @param {string[] | undefined | null} choices - The list of choices for the question.
+ * @returns {boolean} - Returns true if the correct answer is invalid; otherwise false.
+ */
+
 const isInvalidCorrectAnswer = (answer: String | undefined | null, choices: String[] | undefined | null) => {
     if (isInvalidAnswer(answer))
         return true;
@@ -50,10 +67,22 @@ const isInvalidCorrectAnswer = (answer: String | undefined | null, choices: Stri
     return hasMatchingAnswer;
 }
 
+/**
+ * Checks if an answer is invalid.
+ * @param {string | undefined | null} answer - The answer to validate.
+ * @returns {boolean} - Returns true if the answer is invalid; otherwise false.
+ */
 const isInvalidAnswer = (answer: String | undefined | null) =>{
     return answer == null || answer.length == 0;
 }
 
+/**
+ * Adds a new question to the database.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating the result of the operation.
+ */
 export const add_question = redirect_errors(async (req: Request, res: Response) => {   
     let req_payload = req.body;
 
@@ -91,7 +120,13 @@ export const add_question = redirect_errors(async (req: Request, res: Response) 
     return res.status(200).json({message: "Valid response.", db_record: question});
 })
 
-
+/**
+ * Edits an existing question in the database.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating the result of the operation.
+ */
 export const edit_question = redirect_errors(async (req: Request, res: Response) => {
     const req_payload: IEditQuestion = req.body as IEditQuestion;
     const new_params = req_payload?.new_parameters;
@@ -120,6 +155,13 @@ export const edit_question = redirect_errors(async (req: Request, res: Response)
     return res.status(200).json({message: 'Updated.'});
 })
 
+/**
+ * Deletes a question from the database.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating the result of the operation.
+ */
 export const delete_question = redirect_errors(async (req: Request, res: Response) => {
     const { question }: {question: string} = req.body;
 
@@ -134,6 +176,13 @@ export const delete_question = redirect_errors(async (req: Request, res: Respons
 
 })
 
+/**
+ * Retrieves a question from the database.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response containing the question data.
+ */
 export const get_question = redirect_errors(async (req: Request, res: Response) => {
     const { question }: { question: string } = req.body;
 
@@ -155,6 +204,14 @@ export const get_question = redirect_errors(async (req: Request, res: Response) 
     return res.status(200).json(question_data);
 })
 
+
+/**
+ * Lists all questions from the database.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response containing the list of questions.
+ */
 export const list_questions = redirect_errors(async (req: Request, res: Response) => {
     const result = await QuestionModel.find({})
     
@@ -166,6 +223,13 @@ export const list_questions = redirect_errors(async (req: Request, res: Response
     res.status(200).json(payload);
 })
 
+/**
+ * Checks if a submitted answer is correct.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<Response>} - The response indicating whether the answer is correct or not.
+ */
 export const check_answer = redirect_errors(async (req: Request, res: Response) => {
     const req_payload: IAnswer = req.body as IAnswer;
 
