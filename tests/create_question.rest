@@ -1,0 +1,63 @@
+POST http://localhost:8080/create/
+content-type: application/json
+
+{
+    "question": "",
+    "choices": [""],
+    "correct_answer": ""
+}
+
+###
+
+POST http://localhost:8080/create
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "choices": [""],
+    "correct_answer": ""
+}
+
+###
+
+POST http://localhost:8080/create/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "choices": ["To get to the other side"],
+    "correct_answer": ""
+}
+
+###
+
+POST http://localhost:8080/create/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "choices": ["To get to the other side", "To go to school"],
+    "correct_answer": ""
+}
+
+### 
+
+POST http://localhost:8080/create/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "choices": ["To get to the other side", "To go to school"],
+    "correct_answer": "To get to the other"
+}
+
+### 
+
+POST http://localhost:8080/create/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "choices": ["To get to the other side", "To go to school"],
+    "correct_answer": "To get to the other side"
+}

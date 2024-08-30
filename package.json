@@ -1,0 +1,29 @@
+{
+  "name": "lscs-homework",
+  "version": "1.0.0",
+  "description": "Repository to answer the challenge homework for applying for LSCS.",
+  "main": "index.mjs",
+  "type": "module",
+  "types": "/dist/index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node_modules/.bin/concurrently \"tsc -w\" \"nodemon dist/index.mjs\""
+  },
+  "keywords": [],
+  "author": "Roan Cedric V. Campo",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "ansi-styles": "^6.2.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.6.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}

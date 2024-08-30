@@ -1,0 +1,111 @@
+### 
+
+POST http://localhost:8080/get/
+content-type: application/json
+
+{
+    "question": ""
+}
+
+### 
+
+POST http://localhost:8080/get/
+content-type: application/json
+
+{
+    "question": "Why did cow run across the river?"
+}
+
+### 
+
+POST  http://localhost:8080/get/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?"
+}
+
+### 
+
+PATCH   http://localhost:8080/update/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?"
+}
+
+### 
+
+PATCH   http://localhost:8080/update/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "new_paramters": {
+
+    }
+}
+
+### 
+
+PATCH   http://localhost:8080/update/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "new_parameters": {
+        "correct_answer" : "To"
+    }
+}
+
+###
+PATCH   http://localhost:8080/update/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "new_parameters": {
+        "correct_answer" : "To",
+        "choices" : [""]
+    }
+}
+
+###
+PATCH   http://localhost:8080/update/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "new_parameters": {
+        "correct_answer" : "To get to the other side",
+        "choices" : ["To get to the other side"]
+    }
+}
+
+###
+PATCH   http://localhost:8080/update/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "new_parameters": {
+        "correct_answer" : "To go to school",
+        "choices" : ["To get to the other side", "To go to school"]
+    }
+}
+
+###
+PATCH   http://localhost:8080/update/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "new_parameters": {
+        "correct_answer" : "To get to the other side",
+        "choices" : ["To get to the other side", "To go to school"]
+    }
+}
+
+
+
+

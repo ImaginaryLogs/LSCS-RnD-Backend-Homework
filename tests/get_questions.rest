@@ -1,0 +1,70 @@
+GET http://localhost:8080/list/
+
+###
+
+POST http://localhost:8080/check_answer/
+content-type: application/json
+
+{
+    "question": "",
+    "submitted_answer": ""
+}
+
+###
+
+POST http://localhost:8080/check_answer/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "submitted_answer": ""
+}
+
+
+
+
+###
+POST http://localhost:8080/check_answer/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "submitted_answer": "Cause he's a chicken"
+}
+
+###
+
+POST http://localhost:8080/check_answer/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "submitted_answer": "To go to school"
+}
+
+###
+POST http://localhost:8080/check_answer/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?",
+    "submitted_answer": "To get to the other side"
+}
+
+### 
+
+POST http://localhost:8080/get/
+content-type: application/json
+
+{
+    "question": ""
+}
+
+### 
+
+POST http://localhost:8080/get/
+content-type: application/json
+
+{
+    "question": "Why did cow run across the river?"
+}
