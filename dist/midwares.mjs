@@ -12,7 +12,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
  */
 /**
  * Redirect errors from routes to a default error-handler
- * @param controller The URI that is error prone.
+ * @param controller the URI that is error prone.
  * @returns none
  */
 export const redirect_errors = (controller) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,15 +26,21 @@ export const redirect_errors = (controller) => (req, res, next) => __awaiter(voi
 });
 /**
  * Centralized function to send error messages.
- * @param error
- * @param req
- * @param res
- * @param next
+ * @param error: any errors
+ * @param req: request
+ * @param res: response
+ * @param next: the next func
  * @returns
  */
 export function error_handler(error, req, res, next) {
-    console.warn(`Server Error at ${new Date().getTime()}:`);
+    const time = new Date();
+    console.warn(`Server Error at ${time.getHours()}  ${time.getMinutes()}:`);
+    console.log(error.name);
     console.error(error);
+    switch (error.name) {
+        case "MongooseError":
+            return res.status(503).json({ message: 'Database down. Please check connection string.' });
+    }
     return res.status(404).json({ message: 'Unknown Server Error' });
 }
 //# sourceMappingURL=midwares.mjs.map

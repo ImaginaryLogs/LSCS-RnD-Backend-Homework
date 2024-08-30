@@ -6,8 +6,11 @@
   "type": "module",
   "types": "/dist/index.mjs",
   "scripts": {
+    "start": "nodemon dist/index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node_modules/.bin/concurrently \"tsc -w\" \"nodemon dist/index.mjs\""
+    "dev": "run-script-os",
+    "dev:linux": "node_modules/.bin/concurrently \"tsc -w\" \"nodemon dist/index.mjs\"",
+    "dev:win32": "concurrently \"tsc -w\" \"nodemon dist/index.mjs\""
   },
   "keywords": [],
   "author": "Roan Cedric V. Campo",
@@ -23,6 +26,7 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "nodemon": "^3.1.4",
+    "run-script-os": "^1.1.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }

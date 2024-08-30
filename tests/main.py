@@ -1,5 +1,7 @@
 import requests, json, unittest
 
+# Archaic testing.
+
 def is_valid_error(self, result: requests.Response, expected_message: str = r""):
     body = json.loads(result.content)
     self.assertEqual(result.status_code, 400)

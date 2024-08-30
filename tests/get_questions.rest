@@ -68,3 +68,11 @@ content-type: application/json
 {
     "question": "Why did cow run across the river?"
 }
+
+###
+POST http://localhost:8080/get/
+content-type: application/json
+
+{
+    "question": "Why did the chicken cross the road?"
+}

@@ -13,11 +13,98 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
         <h1>Hello LSCS!</h1>
-    
-        <script src="" async defer></script>
+        Here's my application for back-end development. Note that I did not apply for front-end development.
+        
+        Note that this front-end html file is purely functional to help in testing.
+        <hr/>
+
+        <!-- hehe, title -->
+        <h2>Create Question:</h2>
+        <pre id="create_question_output"></pre>
+        <form title ="create_question" method="post">
+            <label for="">Question:</label><br>
+            <input title="question" type="text"><br>
+            
+            <label for="">Choices:</label><br>
+            <input title="choices1" type="text"><br>
+            <input title="choices2" type="text"><br>
+            <input title="choices3" type="text"><br>
+            <input title="choices4" type="text"><br>
+
+            <label for="">Correct Answer:</label><br>
+            <input title="correct_answer" type="text"><br>
+
+            <input type="submit" value="Submit">
+        </form>
+        
+        <hr/>
+
+        <h2>Update Question:</h2>
+        <pre id="update_question_output"></pre>
+        <form title ="update_question">
+            <label for="">Original Question:</label><br>
+            <input title="original_question" type="text"><br>
+
+            <h3>New parameters</h3>
+            <label for="">Question:</label><br>
+            <input title="question" type="text"><br>
+            
+            <label for="">Choices:</label><br>
+            <input title="choices1" type="text"><br>
+            <input title="choices2" type="text"><br>
+            <input title="choices3" type="text"><br>
+            <input title="choices4" type="text"><br>
+
+            <label for="">Correct Answer:</label><br>
+            <input title="correct_answer" type="text"><br>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        <hr/>
+
+        <h2>Delete Question:</h2>
+        <pre id="delete_question_output"></pre>
+        <form title ="delete_question">
+            <label for="">Original Question:</label><br>
+            <input title="question" type="text"><br>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        <hr/>
+
+        <h2>Get Question:</h2>
+        <pre id="get_question_output"></pre>
+        <form title ="get_question">
+            <label for="">Question:</label><br>
+            <input title="question" type="text"><br>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        <hr/>
+        
+        <h2>List Question:</h2>
+        <pre id="list_question_output"></pre>
+        <button id="list_question">List Questions</button>
+
+        <hr/>
+
+        <h2>Check Answer:</h2>
+        <pre id="check_answer_output"></pre>
+        <form title ="check_answer">
+            <label for="">Original Question:</label><br>
+            <input title="question" type="text"><br>
+
+            <label for="">Answer:</label><br>
+            <input title="submitted_answer" type="text"><br>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        <script src="public/app.js"></script>
+            
     </body>
 </html>

@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { BAD_INPUT_MESSAGES } from '../config/config.mjs';
 import { redirect_errors } from "../midwares.mjs";
 import { QuestionModel } from "../models/question_model.mjs";
 ;
@@ -38,68 +39,65 @@ const isInvalidCorrectAnswer = (answer, choices) => {
 const isInvalidAnswer = (answer) => {
     return answer == null || answer.length == 0;
 };
-const bad_input_messages = {
-    invalid_question: 'Invalid question. Must be a non-empty string.',
-    invalid_choices: 'Invalid choices. Must be a non-empty array with at least two non-empty strings.',
-    invalid_correct_answer: 'Invalid correct answer. Answer must be a non-empty string and among choices.',
-    invalid_submitted_answer: 'Invalid answer. Answer must be a non-empty string and must be in the choices.',
-    question_non_uniqueness: 'Question alread exists.',
-    null_new_parameters: 'No new parameters to update',
-    null_question: 'Question does not exist.'
-};
-export const add_question = ((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const req_payload = req.body;
+export const add_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let req_payload = req.body;
+    try {
+        req_payload = req.body;
+    }
+    catch (error) {
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_response });
+    }
     console.log(req_payload);
     // Check Validness
     if (isInvalidQuestion(req_payload === null || req_payload === void 0 ? void 0 : req_payload.question))
-        return res.status(400).json({ message: bad_input_messages.invalid_question });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_question });
     if (isInvalidChoices(req_payload === null || req_payload === void 0 ? void 0 : req_payload.choices))
-        return res.status(400).json({ message: bad_input_messages.invalid_choices });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_choices });
     if (isInvalidCorrectAnswer(req_payload === null || req_payload === void 0 ? void 0 : req_payload.correct_answer, req_payload === null || req_payload === void 0 ? void 0 : req_payload.choices))
-        return res.status(400).json({ message: bad_input_messages.invalid_correct_answer });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_correct_answer });
     const existingQuestion = yield QuestionModel.find().findOne({
         question: req_payload === null || req_payload === void 0 ? void 0 : req_payload.question
     });
     if (existingQuestion)
-        return res.status(400).json({ message: bad_input_messages.question_non_uniqueness });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.question_non_uniqueness });
     const question = yield QuestionModel.create({
         question: req_payload === null || req_payload === void 0 ? void 0 : req_payload.question,
         choices: req_payload === null || req_payload === void 0 ? void 0 : req_payload.choices,
         correct_answer: req_payload === null || req_payload === void 0 ? void 0 : req_payload.correct_answer
     });
-    return res.status(200).json(question);
+    return res.status(200).json({ message: "Valid response.", db_record: question });
 }));
 export const edit_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const req_payload = req.body;
     const new_params = req_payload === null || req_payload === void 0 ? void 0 : req_payload.new_parameters;
-    var existingQuestion = yield QuestionModel.findOne({ question: req_payload.question });
+    var existingQuestion = yield QuestionModel.findOne({ question: req_payload.original_question });
     if (!existingQuestion)
-        return res.status(400).json({ message: bad_input_messages.null_question });
-    if (req_payload.new_parameters == null)
-        return res.status(400).json({ message: bad_input_messages.null_new_parameters });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.null_question });
+    if (req_payload.new_parameters == null || Object.keys(req_payload.new_parameters).length == 0)
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.null_new_parameters });
     if ((new_params === null || new_params === void 0 ? void 0 : new_params.choices) && isInvalidChoices(new_params === null || new_params === void 0 ? void 0 : new_params.choices))
-        return res.status(400).json({ message: bad_input_messages.invalid_choices });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_choices });
     if ((new_params === null || new_params === void 0 ? void 0 : new_params.correct_answer) && isInvalidCorrectAnswer(new_params === null || new_params === void 0 ? void 0 : new_params.correct_answer, (_a = new_params === null || new_params === void 0 ? void 0 : new_params.choices) !== null && _a !== void 0 ? _a : existingQuestion.choices))
-        return res.status(400).json({ message: bad_input_messages.invalid_correct_answer });
-    const result = QuestionModel.findOneAndUpdate({ "question": req_payload.question }, { "$set": new_params }, { upsert: false }).exec();
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_correct_answer });
+    const result = QuestionModel.findOneAndUpdate({ "question": req_payload.original_question }, { "$set": new_params }, { upsert: false }).exec();
     return res.status(200).json({ message: 'Updated.' });
 }));
 export const delete_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { question } = req.body;
     const existingQuestion = yield QuestionModel.findOne({ question: question });
     if (!existingQuestion)
-        return res.status(400).json({ message: bad_input_messages.null_question });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.null_question });
     const result = yield QuestionModel.deleteOne({ question });
     return res.status(200).json(result);
 }));
 export const get_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { question } = req.body;
     if (isInvalidQuestion(question))
-        return res.status(400).json({ message: bad_input_messages.invalid_question });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_question });
     const result = yield QuestionModel.findOne({ question: question });
     if (!result)
-        return res.status(400).json({ message: bad_input_messages.null_question });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.null_question });
     const question_data = {
         question: result.question,
         choices: result.choices,
@@ -119,16 +117,15 @@ export const check_answer = redirect_errors((req, res) => __awaiter(void 0, void
     var _a;
     const req_payload = req.body;
     if (isInvalidAnswer(req_payload.submitted_answer))
-        return res.status(400).json({ message: bad_input_messages.invalid_submitted_answer });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_submitted_answer });
     var existingQuestion = (_a = (yield QuestionModel.find().findOne({
         question: req_payload === null || req_payload === void 0 ? void 0 : req_payload.question
     }))) === null || _a === void 0 ? void 0 : _a.toJSON();
     if (!existingQuestion)
-        return res.status(400).json({ message: bad_input_messages.null_question });
+        return res.status(400).json({ message: BAD_INPUT_MESSAGES.null_question });
     if (isInvalidCorrectAnswer(req_payload.submitted_answer, existingQuestion === null || existingQuestion === void 0 ? void 0 : existingQuestion.choices))
-        return res.json({ message: bad_input_messages.invalid_submitted_answer });
+        return res.json({ message: BAD_INPUT_MESSAGES.invalid_submitted_answer });
     const isUserCorrect = existingQuestion.correct_answer == req_payload.submitted_answer;
-    console.log(isUserCorrect);
     return res.status(200).json({ message: `Answer is ${isUserCorrect.toString()}` });
 }));
 //# sourceMappingURL=question.controller.mjs.map

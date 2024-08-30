@@ -9,7 +9,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:8080/create
+POST http://localhost:8080/create/
 content-type: application/json
 
 {
