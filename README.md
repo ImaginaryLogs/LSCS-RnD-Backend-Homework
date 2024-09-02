@@ -86,7 +86,7 @@ Submitting a requires to go to `/check_answer` uri with following to `POST`:
 
 3) Install the node modules via `npm i`.
 
-4) Go to the terminal and run the following command `npm run start` in the root directory.
+4) Go to the terminal and run the following command `npm run dev` in the root directory.
 
 5) Check the console if the database is connected.
 
