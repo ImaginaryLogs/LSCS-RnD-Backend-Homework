@@ -69,25 +69,26 @@ const isInvalidAnswer = (answer) => {
  */
 export const add_question = redirect_errors((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let req_payload = req.body;
+    let error_response = (message_string) => res.status(400).json({ message: message_string });
     try {
         req_payload = req.body;
     }
     catch (error) {
-        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_response });
+        return error_response(BAD_INPUT_MESSAGES.invalid_response);
     }
     console.log(req_payload);
     // Check Validness
     if (isInvalidQuestion(req_payload === null || req_payload === void 0 ? void 0 : req_payload.question))
-        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_question });
+        return error_response(BAD_INPUT_MESSAGES.invalid_question);
     if (isInvalidChoices(req_payload === null || req_payload === void 0 ? void 0 : req_payload.choices))
-        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_choices });
+        return error_response(BAD_INPUT_MESSAGES.invalid_choices);
     if (isInvalidCorrectAnswer(req_payload === null || req_payload === void 0 ? void 0 : req_payload.correct_answer, req_payload === null || req_payload === void 0 ? void 0 : req_payload.choices))
-        return res.status(400).json({ message: BAD_INPUT_MESSAGES.invalid_correct_answer });
+        return error_response(BAD_INPUT_MESSAGES.invalid_correct_answer);
     const existingQuestion = yield QuestionModel.find().findOne({
         question: req_payload === null || req_payload === void 0 ? void 0 : req_payload.question
     });
     if (existingQuestion)
-        return res.status(400).json({ message: BAD_INPUT_MESSAGES.question_non_uniqueness });
+        return error_response(BAD_INPUT_MESSAGES.question_non_uniqueness);
     const question = yield QuestionModel.create({
         question: req_payload === null || req_payload === void 0 ? void 0 : req_payload.question,
         choices: req_payload === null || req_payload === void 0 ? void 0 : req_payload.choices,

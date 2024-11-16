@@ -85,31 +85,29 @@ const isInvalidAnswer = (answer: String | undefined | null) =>{
  */
 export const add_question = redirect_errors(async (req: Request, res: Response) => {   
     let req_payload = req.body;
+    
+    let error_response = (message_string: string) => res.status(400).json({message: message_string});
 
     try {
         req_payload = req.body as IQuestion;
     } catch (error: unknown){
-        return res.status(400).json({message: BAD_INPUT_MESSAGES.invalid_response});
+        return error_response(BAD_INPUT_MESSAGES.invalid_response);
     }
 
     console.log(req_payload)
     
     // Check Validness
-    if (isInvalidQuestion(req_payload?.question)) 
-        return res.status(400).json({message: BAD_INPUT_MESSAGES.invalid_question})
+    if (isInvalidQuestion(req_payload?.question)) return error_response(BAD_INPUT_MESSAGES.invalid_question)
 
-    if (isInvalidChoices(req_payload?.choices)) 
-        return res.status(400).json({message: BAD_INPUT_MESSAGES.invalid_choices})
+    if (isInvalidChoices(req_payload?.choices)) return error_response(BAD_INPUT_MESSAGES.invalid_choices)
     
-    if (isInvalidCorrectAnswer(req_payload?.correct_answer, req_payload?.choices))
-        return res.status(400).json({message: BAD_INPUT_MESSAGES.invalid_correct_answer})
+    if (isInvalidCorrectAnswer(req_payload?.correct_answer, req_payload?.choices))return error_response(BAD_INPUT_MESSAGES.invalid_correct_answer)
     
     const existingQuestion = await QuestionModel.find().findOne({
         question: req_payload?.question
     })
 
-    if (existingQuestion)
-        return res.status(400).json({message: BAD_INPUT_MESSAGES.question_non_uniqueness})
+    if (existingQuestion) return error_response(BAD_INPUT_MESSAGES.question_non_uniqueness)
 
     const question = await QuestionModel.create({
         question: req_payload?.question,
